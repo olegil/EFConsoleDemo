@@ -5,11 +5,9 @@ namespace EFConsoleDemo {
     class Program {
         static void Main(string[] args)
         {
-
             AppDomain.CurrentDomain.SetData("DataDirectory", System.IO.Directory.GetCurrentDirectory());
 
             MyContext context = new MyContext();
-            Database.SetInitializer(new DbInitializer());
             context.Database.Log = Console.Write; //generated sql is output to console
 
             Product product = new Product { Name = "product 1" };
