@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EFConsoleDemo.models;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -11,20 +12,47 @@ namespace EFConsoleDemo {
             MyContext context = new MyContext();
             context.Database.Log = Console.Write; //generated sql is output to console
 
-            //add record
-            Product product = new Product { Name = "product 1" };
-            context.Products.Add(product);
-            context.SaveChanges();
+            //test grouy by query
+            testGroupByQuery(context);
 
             //test IQueryable and IEnumeric difference when query
-            testIQueryableAndIEnumbericDifferenceWhenQuery(context);
+            //testIQueryableAndIEnumbericDifferenceWhenQuery(context);
 
             Console.WriteLine("Press any key to exit...");
             Console.ReadKey();
         }
 
+        public static void testGroupByQuery(MyContext context)
+        {
+            //group by single columns
+            var groupDictionary = context.Modules.GroupBy(x => x.ModuleCategory.Name).ToList();
+            foreach (var group in groupDictionary)
+            {
+                Console.WriteLine(group.Key);
+                foreach (var groupItem in group)
+                {
+                    Console.WriteLine(">>>>" + groupItem.Title);
+                }
+            }
+
+            //group by multiple columns
+            var groupDictionary2 = context.Modules.GroupBy(x => new {x.ModuleCategory.IsPublic,x.ModuleCategory.Name}).ToList();
+            foreach (var group in groupDictionary2)
+            {
+                Console.WriteLine(group.Key.IsPublic + "," + group.Key.Name);
+                foreach(var groupItem in group){
+                    Console.WriteLine(">>>>" + groupItem.Title);
+                }
+            }
+        }
+
         public static void testIQueryableAndIEnumbericDifferenceWhenQuery(MyContext context)
         {
+            //add dummy record
+            Product product = new Product { Name = "product 1" };
+            context.Products.Add(product);
+            context.SaveChanges();
+
             /*
              * Here are 4 EF query examples with 3 different sources:
              *  IEnumerable
@@ -88,30 +116,6 @@ namespace EFConsoleDemo {
         }
     }
 
-    public class MyContext : DbContext {
-        public MyContext() : base("EFConsoleDemoDB") { }
-        public DbSet<Product> Products { get; set; } 
-    }
 
-    public class DbInitializer : DropCreateDatabaseAlways<MyContext>
-    {
-        protected override void Seed(MyContext context)
-        {
-            var products = new List<Product>
-            {
-                new Product{Name="p1", Description="desc1"},
-                new Product{Name="p2", Description="desc2"}
-            };
-            products.ForEach(s => context.Products.Add(s));
-            //context.SaveChanges(); //no need this line
-            base.Seed(context);
-        }
-    }
 
-    public class Product
-    {
-        public int ID { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-    } 
 }

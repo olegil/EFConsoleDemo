@@ -48,29 +48,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Migrations\201409230850104_InitialCreate.cs" />
-    <Compile Include="Migrations\201409230850104_InitialCreate.Designer.cs">
-      <DependentUpon>201409230850104_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201409230857270_AddProductDesc.cs" />
-    <Compile Include="Migrations\201409230857270_AddProductDesc.Designer.cs">
-      <DependentUpon>201409230857270_AddProductDesc.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="DbInitializer.cs" />
+    <Compile Include="models\Module.cs" />
+    <Compile Include="models\ModuleAndItemRelationship.cs" />
+    <Compile Include="models\ModuleCategory.cs" />
+    <Compile Include="models\ModuleItem.cs" />
+    <Compile Include="models\Product.cs" />
+    <Compile Include="MyContext.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201409230850104_InitialCreate.resx">
-      <DependentUpon>201409230850104_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201409230857270_AddProductDesc.resx">
-      <DependentUpon>201409230857270_AddProductDesc.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
